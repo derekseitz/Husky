@@ -1,0 +1,273 @@
+os.pullEvent = os.pullEventRaw
+version = "1.4 -B"
+build = "140"
+
+opcje = {}
+wybor = 1
+opcje[1] = "Ja      "
+opcje[2] = "Nein    "
+
+ 
+function uruchom(numer)
+ if numer == 1 then
+ shell.run("clear")
+  print("              HuskyOS Update-Manager")
+print("---------------------------------------------------")
+print("            ")
+print("    ")
+print("")
+print("Verbidung zum Server wird aufgebaut...")
+sleep(2)
+term.setCursorPos(35,6)
+print(" [ABGESCHLOSSEN]")
+print(" Update-Setup wird heruntergeladen...")
+fs.delete("/.update_cache/update_setup")
+shell.run("/plugins/pget xYp77NN9 /.update_cache/update_setup")
+sleep(5)
+term.setCursorPos(35,7)
+print(" [ABGESCHLOSSEN]")
+print("      Update-Setup wird entpackt...")
+sleep(4)
+term.setCursorPos(33,8)
+print("   [ABGESCHLOSSEN]")
+print("Update wird geladen (Das dauert eine Weile)...")
+sleep(7)
+term.setCursorPos(36,10)
+print("[ABGESCHLOSSEN]")
+shell.run("/.update_cache/update_setup")
+
+end
+
+
+ if numer == 2 then
+shell.run("clear")
+print("Das Betriebsystem wird nicht Installiert.")
+sleep(1)
+shell.run("eject left")
+shell.run("eject top")
+shell.run("eject bottom")
+shell.run("eject back")
+shell.run("eject right")
+shell.run("eject front")
+term.clear()
+os.reboot()
+
+ 
+
+term.clear()
+term.setCursorPos(1,1)
+os.reboot()
+ end
+ 
+
+ 
+end
+
+ 
+
+function Taste()
+ sleep(0)
+ event, argument = os.pullEvent()
+ if event == "key" then
+  if argument == 28 then
+   return uruchom(wybor)
+  elseif argument == 200 then
+   if wybor == 1 then
+   else
+    wybor = wybor - 1
+   end
+  elseif argument == 208 then
+   if wybor == table.getn(opcje) then
+   else
+    wybor = wybor + 1
+   end
+  else
+   return Taste()
+  end
+ else
+  return Taste()
+ end
+ return menu()
+end
+ 
+
+ shell.run("clear")
+print("              HuskyOS Update-Manager")
+print("---------------------------------------------------")
+print("            ")
+print("    ")
+print("")
+print("               Suche nach Updates...               ")
+
+
+term.setCursorPos(1,10)
+print("Verbindung zu dem HuskyOS-Server wird hergestellt..")
+
+shell.run("cd /")
+shell.run("mkdir .update_cache")
+shell.run("cd .update_cache")
+if fs.exists("/.update_cache/pget") == true then
+else
+
+
+fs.copy("/plugins/pget", "/.update_cache/pget")
+
+end
+
+if fs.exists("/.update_cache/update") == true then
+
+else
+
+shell.run("pget QSAveMDf update")
+end
+
+
+file = fs.open("/.update_cache/update", "r")
+
+
+sleep(1)
+
+term.setCursorPos(0,10)
+print("                 Pruefe Versionen...                ")
+	if file then
+	for i=1,4 do
+				serverversion = file.readLine()
+				end
+	end
+	for i=1,2 do
+				line = file.readLine()
+				end
+                file.close()
+
+	sleep(3)
+	
+	if build < line then
+	
+term.setCursorPos(0,10)
+term.clearLine()
+term.setCursorPos(0,5)
+
+function menu()
+ shell.run("clear")
+print("              HuskyOS Update-Manager")
+print("---------------------------------------------------")
+print("            ")
+
+print("")
+
+print("                 Update Verfuegbar!                  ")
+
+print("")
+print("")
+print("     Lokale Version            Server-Version ")
+print("---------------------------------------------------")
+term.setCursorPos(1,10)
+print("     Version: V"..version)
+term.setCursorPos(1,11)
+print("        Build "..build)
+term.setCursorPos(25,10)
+print("|     Version: V"..serverversion)
+term.setCursorPos(18,11)
+print("       |        Build "..line)
+term.setCursorPos(15,12)
+print("          |           ")
+print("---------------------------------------------------")
+
+print("       Moechtest du HuskyOS Aktualisieren?          ")
+print("")
+
+    for i=1, table.getn(opcje) do
+  if wybor == i then
+   print("                     >"..opcje[i].."")
+  else
+   print("                       "..opcje[i].."")
+  end
+ end
+
+
+  return Taste()
+end
+
+shell.run("clear")
+return menu() 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	--else if build
+
+else
+
+term.setCursorPos(0,10)
+term.clearLine()
+term.setCursorPos(0,6)
+
+print("               Kein Update Verfuegbar!               ")
+
+term.setCursorPos(1,13)
+print("Druecke eine Taste um zu HuskyOS zurueckzukehren...")
+fs.delete("/.update_cache")
+os.pullEvent("key")
+shell.run("exit")
+
+
+
+
+
+
+	--end if build
+end
+
+
+
+
+
+
+--[[
+    print("---------------------------------------------------")
+	term.setCursorPos(23,6)
+	print("  HuskyOS installer V1.2.2")
+	term.setCursorPos(23,7)
+	print("")
+	term.setCursorPos(23,8)
+	print(" HuskyOS wurde erstellt von")
+	term.setCursorPos(23,9)
+	print("          Deadm_5 / TerraBAS")
+	term.setCursorPos(0,11)
+	print("     Druecke Enter um eine Option auszuwaehlen     ")
+	term.setCursorPos(2,11)
+	print("---------------------------------------------------")
+	term.setCursorPos(2,13)
+	print("Wrong language? Then choose the language option! ")
+	
+		term.setCursorPos(2,13)
+	print("---------------------------------------------------")
+	
+]]--
+   
+
+   
+   
+   
+   
+   
+--[[   
+    for i=1, table.getn(opcje) do
+  if wybor == i then
+   print(" Auswahl>"..opcje[i].."   |")
+  else
+   print("          "..opcje[i].."  |")
+  end
+ end
+ --]]

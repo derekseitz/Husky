@@ -1,0 +1,1292 @@
+--[[
+HuskyOSclient
+version:1.1.4-BETA
+release:19.10.1013
+patch:2
+--]]
+
+local isAdvanced = term.isColor and term.isColor() 
+if isAdvanced then 
+else
+	term.clear()
+    print("Sorry, but HuskyOS ist only aviable for Advanced Computers!")
+	print("")
+	print("A HoS for normal Computers will be released shortly on http://schwarzis.net")
+	sleep(10)
+	os.shutdown()
+end
+
+
+
+function main()
+bar1 = paintutils.loadImage(".bar1")
+logo = paintutils.loadImage(".logo")
+icon = paintutils.loadImage(".icon")
+TriviaLogo = paintutils.loadImage(".trivia")
+tBarC = 8
+tBartC = 1
+backColor = 1
+scroll = 0
+Version = "1.1.3"
+build = "113"
+credCol = 32
+firstCol = 1
+secCol = 2048
+Author  = "Deadm_5"
+ErrCol1 = 16384
+calcCol = 256
+
+--Desktop
+term.setBackgroundColor(backColor)
+term.clear()
+
+slc = 0
+
+function passgen()
+function clear()
+  term.clear()
+  term.setCursorPos(1,1)
+end
+function center(text,y,mode)
+  w,h = term.getSize()
+  term.setCursorPos((w/2)-(#text/2),y)
+  if mode == nil then mode = "print" end
+  if mode == "write" then
+    write(text)
+  else
+    print(text)
+  end
+end
+clear()
+write "Length (Max 50): "
+local length = read()
+if not tonumber(length) then
+  print("Use a number please")
+  sleep(2)
+  error()
+else
+  length = tonumber(length)
+end
+if length > 51 then
+        print("Please enter a length 50 characters or below")
+        sleep(2)
+        error()
+end
+lower = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'}
+upper = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'}
+special = {'!','@','#','$','%','^','&','*'}
+numbers = {'0','1','2','3','4','5','6','7','8','9'}
+mode = {"usnl","usln","ulsn","unsl","unls","ulns","nusl", "nsul", "sunl", "snul","lsnu","lsun","luns","lusn","lnsu","lnus" ,"nu", "un", "sn", "ns", "us", "su", "u", "s", "n"}
+clear()
+center("Modes: Upper[u], special[s], number[n], lower[l]",2)
+print()
+print()
+write "write all modes you want (no commas): "
+local l = false
+local u = false
+local s = false
+local n = false
+mds = ""
+while true do
+  event, key = os.pullEvent("key")
+  if key == 22 then
+    if u == false then
+      u = true
+      term.setCursorPos(1,7)
+      print"Upper"
+          mds = mds.."u"
+    else
+      u = false
+      term.setCursorPos(1,7)
+      term.clearLine()
+          mds = mds:gsub( "u", "" )
+    end
+  elseif key == 31 then
+    if s == false then
+      s = true
+      term.setCursorPos(1,8)
+      print"Special"
+          mds = mds.."s"
+    else
+      s = false
+      term.setCursorPos(1,8)
+      term.clearLine()
+          mds = mds:gsub("s","")
+    end
+  elseif key == 49 then
+    if n == false then
+      n = true
+      term.setCursorPos(1,9)
+      print"Number"
+          mds = mds.."n"
+    else
+      n = false
+      term.setCursorPos(1,9)
+      term.clearLine()
+          mds = mds:gsub("n", "")
+    end
+  elseif key == 38 then
+    if l == false then
+      l = true
+      term.setCursorPos(1,10)
+      print"Lower"
+          mds = mds.."l"
+    else
+      l = false
+      term.setCursorPos(1,10)
+      term.clearLine()
+          mds = mds:gsub("l", "")
+    end
+  elseif key == 28 and (l or n or s or u) then
+    break
+  end
+end
+mds = string.lower(mds)
+local test = false
+for i=1, #mode do
+  if mds == mode[i] then
+    test = true
+    break
+  end
+end
+if test == false then
+  print("Invalid mode: "..mds)
+end
+modes = {}
+message = ""
+if l == true and n == true and s == true and u == true then
+  for i=1, length do
+    num = math.random(4)
+    if num == 1 then
+      message = message..lower[math.random(#lower)]
+    elseif num == 2 then
+      message = message..upper[math.random(#upper)]
+    elseif num == 3 then
+      message = message..special[math.random(#special)]
+    elseif num == 4 then
+      message = message..numbers[math.random(#numbers)]
+    end
+  end
+elseif n == true and s == true and u == true then
+  for i=1, length do
+    num = math.random(3)
+    if num == 1 then
+      message = message..upper[math.random(#upper)]
+    elseif num == 2 then
+      message = message..special[math.random(#special)]
+    elseif num == 3 then
+      message = message..numbers[math.random(#numbers)]
+    end
+  end
+elseif n == true and s == true and l == true then
+  for i=1, length do
+    num = math.random(3)
+    if num == 1 then
+      message = message..special[math.random(#special)]
+    elseif num == 2 then
+      message = message..numbers[math.random(#numbers)]
+    elseif num == 3 then
+      message = message..lower[math.random(#lower)]
+    end
+  end
+else if n == true and s == true then
+  for i=1, length do
+    num = math.random(2)
+    if num == 1 then
+      message = message..numbers[math.random(#numbers)]
+    elseif num == 2 then
+      message = message..special[math.random(#special)]
+    end
+  end
+elseif l == true and u == true and s == true then
+  for i=1, length do
+    num = math.random(3)
+    if num == 1 then
+      message = message..upper[math.random(#upper)]
+    elseif num == 2 then
+      message = message..lower[math.random(#lower)]
+    elseif num == 3 then
+      message = message..special[math.random(#special)]
+    end
+  end
+elseif s == true and u == true then
+  for i=1, length do
+    num = math.random(2)
+    if num == 1 then
+      message = message..special[math.random(#special)]
+    else
+      message = message..upper[math.random(#upper)]
+    end
+  end
+elseif l == true and n == true and u == true then
+  for i=1, length do
+    num = math.random(3)
+    if num == 1 then
+      message = message..upper[math.random(#upper)]
+    elseif num == 2 then
+      message = message..numbers[math.random(#numbers)]
+    elseif num == 3 then
+      message = message..lower[math.random(#lower)]
+    end
+  end
+elseif u == true and n == true then
+  for i=1, length do
+    num = math.random()
+    if num == 1 then
+      message = message..upper[math.random(#upper)]
+    else
+      message = message..numbers[math.random(#numbers)]
+    end
+  end
+elseif l == true and n == true then
+  for i=1, length do
+    num = math.random(2)
+    if num == 1 then
+      message = message..numbers[math.random(#numbers)]
+    elseif num == 2 then
+      message = message..lower[math.random(#lower)]
+    end
+  end
+elseif l == true and s == true then
+  for i=1, length do
+    num = math.random(2)
+    if num == 1 then
+      message = message..special[math.random(#special)]
+    elseif num == 2 then
+      message = message..lower[math.random(#lower)]
+    end
+  end
+elseif l == true and u == true then
+  for i=1, length do
+    num = math.random(2)
+    if num == 1 then
+      message = message..upper[math.random(#upper)]
+    elseif num == 2 then
+      message = message..lower[math.random(#lower)]
+    end
+  end
+elseif l == true then
+  for i=1, length do
+    message = message..lower[math.random(#lower)]
+  end
+elseif n == true then
+  for i=1, length do
+    message = message..numbers[math.random(#numbers)]
+  end
+elseif s == true then
+  for i=1, length do
+    message = message..special[math.random(#special)]
+  end
+elseif u == true then
+  for i=1, length do
+    message = message..upper[math.random(#upper)]
+  end
+end
+end
+clear()
+center("Your Password is: ", 4)
+center(message,6)
+sleep(10)
+term.clear()
+drawDesktop()
+end
+
+function credits()
+term.clear()
+term.setCursorPos(1,1)
+term.setTextColor(credCol)
+print("Credits")
+term.setCursorPos(1,3)
+print("Programs and apis:")
+term.setCursorPos(1,5)
+print("CCalendar - TheOriginalBIT")
+term.setCursorPos(1,6)
+print("Passgen -  Conn332")
+term.setCursorPos(1,7)
+print("Modding BETA - Deadm_5")
+term.setCursorPos(1,9)
+print("Help in development:")
+term.setCursorPos(1,11)
+print("All the great people that helped me on the forums! - You know who you are :)")
+term.setCursorPos(1,14)
+print("Special thanks to:")
+term.setCursorPos(1,16)
+print("faubiguy - Helping me with the password changing")
+term.setCursorPos(1,18)
+write("Press any key to return")
+os.pullEvent("key")
+term.clear()
+drawDesktop()
+end
+
+
+function login()
+term.clear()
+
+term.setCursorPos(1,1)
+print("Einloggen")
+  term.setTextColor(32)
+  term.setCursorPos(30, 18)
+  print("OS-Version: "..Version)
+  term.setTextColor(256)
+term.setCursorPos(1,3)
+write("Benutzername: ")
+usrName = read()
+write("Passwort: ")
+local pass = read("*")
+file = fs.open("users/"..usrName,"r")
+if not fs.exists("users/"..usrName) then
+term.clear()
+term.setCursorPos(1,1)
+print("Login gescheitert!")
+sleep(1)
+term.clear()
+drawDesktop()
+elseif fs.exists("users/"..usrName) then
+local fileData = {}
+local line = file.readLine()
+repeat
+table.insert(fileData, line)
+line = file.readLine()
+until line == nil -- readLine()
+file.close()
+local passFromFile = fileData[1]
+if pass == passFromFile then
+term.clear()
+term.setCursorPos(1,1)
+print("Login erfolgreich!")
+sleep(1)
+term.clear()
+drawDesktop2()
+else
+term.clear()
+term.setCursorPos(1,1)
+print("Login gescheitert!")
+sleep(1)
+term.clear()
+drawDesktop()
+end
+end
+end
+
+function register()
+term.clear()
+term.setCursorPos(1,1)
+print("Registrierung")
+term.setCursorPos(1,3)
+write("Benutzername: ")
+usrName = read()
+term.setCursorPos(1,4)
+write("Passwort: ")
+local pass = read("*")
+fs.makeDir("users")
+if not fs.exists("users/"..usrName) then
+local file = fs.open("users/"..usrName, "a")
+file.writeLine(pass)
+file.close()
+sleep(0.5)
+term.clear()
+term.setCursorPos(1,1)
+print("Registriert!")
+sleep(0.5)
+term.clear()
+drawDesktop2()
+elseif fs.exists("users/"..usrName) then
+term.clear()
+term.setCursorPos(1,1)
+print("Diesen Benutzernamen gibt es schon!")
+sleep(1)
+term.clear()
+drawDesktop()
+end
+end
+
+function titleBar2()
+  term.setCursorPos(1,1)
+  term.setBackgroundColor(tBarC)
+  term.setTextColor(tBartC)
+  term.clearLine()
+  term.setCursorPos(2,1)
+  print("[Menu]")
+  term.setCursorPos(10,1)
+  print("[Spiele]")
+  term.setCursorPos(20,1)
+  print("[System]")
+  term.setCursorPos(30,1)
+  print("Eingeloggt als: "..usrName)
+  
+end
+
+function drawDesktop2()
+  slc = 2
+  term.setBackgroundColor(backColor)
+  term.clear()
+  term.setTextColor(32)
+  term.setCursorPos(1,20)
+  print("Laufende Version: "..Version)
+  paintutils.drawImage(logo,1,1)
+  paintutils.drawImage(icon,3,10)
+  term.setCursorPos(46, 18)
+  print("A")
+  term.setCursorPos(46, 17)
+  print("T")
+  term.setCursorPos(46, 16)
+  print("E")
+  term.setCursorPos(46, 15)
+  print("B")
+  titleBar2()
+
+end
+
+function drawMenu2()
+term.setTextColor(256)
+term.setBackgroundColor(128)
+term.setCursorPos(1,2)
+print("               ")
+term.setCursorPos(1,3)
+print("Ausloggen      ")
+term.setCursorPos(1,4)
+print("Taschenrechner ")
+term.setCursorPos(1,5)
+print("Account        ")
+term.setCursorPos(1,6)
+print("Explorer       ")
+term.setCursorPos(1,7)
+print("UHR            ")
+term.setCursorPos(1,8)
+print("E-mail         ")
+term.setCursorPos(1,9)
+print("Herunterfahren ")
+term.setCursorPos(1,10)
+print("Neu starten    ")
+term.setCursorPos(1,11)
+print("               ")
+end
+
+function drawMenu3()
+term.setTextColor(256)
+term.setBackgroundColor(128)
+term.setCursorPos(10,2)
+print("          ")
+term.setCursorPos(10,3)
+print(" Trivia   ")
+term.setCursorPos(10,4)
+print("          ")
+end
+
+function drawMenu20()
+term.setTextColor(256)
+term.setBackgroundColor(128)
+term.setCursorPos(20,2)
+print("               ")
+term.setCursorPos(20,3)
+print(" Einstellungen ")
+term.setCursorPos(20,4)
+print(" System-Info   ")
+term.setCursorPos(20,5)
+print(" Shell         ")
+term.setCursorPos(20,6)
+print(" Update        ")
+term.setCursorPos(20,7)
+print(" Licenseinfo   ")
+term.setCursorPos(20,8)
+print("               ")
+end
+
+function titleBar()
+  term.setCursorPos(1,1)
+  term.setBackgroundColor(tBarC)
+  term.setTextColor(tBartC)
+  term.clearLine()
+  term.setCursorPos(3,1)
+  print("[Menu]")
+end
+
+function drawDesktop()
+  term.setBackgroundColor(backColor)
+  term.clear()
+  term.setCursorPos(1,20)
+  term.setTextColor(32)
+  print("Running Version: "..Version)
+  paintutils.drawImage(logo,1,1)
+  term.setCursorPos(46, 18)
+  term.setCursorPos(46, 18)
+  print("A")
+  term.setCursorPos(46, 17)
+  print("T")
+  term.setCursorPos(46, 16)
+  print("E")
+  term.setCursorPos(46, 15)
+  print("B")
+  titleBar()
+
+end
+
+function drawMenu1()
+term.setTextColor(256)
+term.setBackgroundColor(128)
+term.setCursorPos(1,2)
+print("                ")
+term.setCursorPos(1,3)
+print(" Einloggen      ")
+term.setCursorPos(1,4)
+print(" Registrieren   ")
+term.setCursorPos(1,5)
+print(" Neustart       ")
+term.setCursorPos(1,6)
+print(" Herunterfahren ")
+term.setCursorPos(1,7)
+print(" Passgen        ")
+term.setCursorPos(1,8)
+print(" Credits        ")
+term.setCursorPos(1,9)
+print("                ")
+end
+
+function licence()
+drawDesktop2()
+term.setTextColor(colors.green)
+term.setBackgroundColor(128)
+term.setCursorPos(5, 4)
+print("                                           ")
+term.setCursorPos(5, 5)
+print("       ----Licenseinformations----         ")
+term.setCursorPos(5, 6)
+term.setTextColor(colors.white)
+print("                                           ")
+term.setTextColor(colors.white)
+term.setCursorPos(5, 7)
+print(" Product:  HuskyOS 1.4 [GUI][CLIENT]       ")
+term.setCursorPos(5, 8)
+print(" Status:                                   ")
+term.setCursorPos(13, 8)
+term.setTextColor(colors.red)
+print(" --Not activated--                 ")
+term.setTextColor(colors.white)
+term.setCursorPos(5, 9)
+print("                                           ")
+term.setCursorPos(5, 10)
+print(" Activated by  :                           ")
+term.setCursorPos(21, 10)
+term.setTextColor(colors.red)
+print(" --Not set--               ")
+term.setTextColor(colors.white)
+term.setCursorPos(5, 11)
+print("Update activated:                          ")
+term.setCursorPos(22, 11)
+term.setTextColor(colors.red)
+print(" [NO] --LOCKED due Licence")
+term.setTextColor(colors.white)
+term.setCursorPos(5, 12)
+print("                                           ")
+term.setCursorPos(5, 13)
+print("To activate this version of HuskyOS, follow")
+term.setCursorPos(5, 14)
+print(" the instructions on HuskyOS.schwarzis.net ")
+term.setCursorPos(5, 15)
+print("                                           ")
+end
+
+
+function calc()
+term.setTextColor(calcCol)
+term.clear()
+term.setCursorPos(1,1)
+print("Do you want to Add, Subtract, Divide, Multiply or Raise?")
+op = read()
+print("")
+print("What is the first number to be operated on?")
+num1 = tonumber(read())
+print("")
+print("And the second number?")
+num2 = tonumber(read())
+print("")
+if op == "add" then
+result = num1+num2
+print(result)
+sleep(5)
+term.clear()
+drawDesktop2()
+elseif op == "multiply" then
+result = num1*num2
+print(result)
+sleep(5)
+term.clear()
+drawDesktop2()
+elseif op == "subtract" then
+result = num1-num2
+print(result)
+sleep(5)
+term.clear()
+drawDesktop2()
+elseif op == "divide" then
+result = num1/num2
+print(result)
+sleep(5)
+term.clear()
+drawDesktop2()
+elseif op == "raise" then
+result = num1^num2
+print(result)
+sleep(5)
+term.clear()
+drawDesktop2()
+else
+term.clear()
+term.setCursorPos(1,1)
+print("You failed! Try again.")
+sleep(1)
+term.clear()
+drawDesktop2()
+end
+end
+
+function titlebar3()
+term.setCursorPos(1,1)
+  term.setBackgroundColor(tBarC)
+  term.setTextColor(tBartC)
+  term.clearLine()
+  term.setCursorPos(3,1)
+  print("[Begin] ")
+  term.setCursorPos(13,1)
+  print("Logged in as: "..usrName)
+end
+
+function acc()
+slc = 4
+term.setBackgroundColor(backColor)
+  term.clear()
+paintutils.drawImage(logo,1,1)
+  titlebar3()
+end
+
+function delacc()
+slc = 6
+term.clear()
+term.setCursorPos(1,1)
+print("Really delete account?")
+term.setCursorPos(1,3)
+print("Yes")
+term.setCursorPos(7,3)
+print("No")
+end
+
+function delacc2()
+term.clear()
+term.setCursorPos(1,1)
+print("Deleting account")
+term.setCursorPos(1,3)
+write("Username: ")
+usrName = read()
+write("Password: ")
+local pass = read("*")
+file = fs.open("users/"..usrName,"r")
+if not fs.exists("users/"..usrName) then
+term.clear()
+term.setCursorPos(1,1)
+print("Failure")
+sleep(1)
+term.clear()
+acc()
+elseif fs.exists("users/"..usrName) then
+local fileData = {}
+local line = file.readLine()
+repeat
+table.insert(fileData, line)
+line = file.readLine()
+until line == nil -- readLine()
+file.close()
+local passFromFile = fileData[1]
+if pass == passFromFile then
+fs.delete("users/"..usrName)
+term.clear()
+term.setCursorPos(1,1)
+print("Deleted account!")
+sleep(1)
+term.clear()
+drawDesktop()
+end
+end
+end
+
+function drawMenu4()
+term.setTextColor(256)
+term.setBackgroundColor(128)
+term.setCursorPos(1,2)
+print("           ")
+term.setCursorPos(1,3)
+print("Change pass")
+term.setCursorPos(1,4)
+print("Delete acc ")
+term.setCursorPos(1,5)
+print("Go back    ")
+term.setCursorPos(1,6)
+print("           ")
+end
+
+function changepass()
+term.clear()
+term.setCursorPos(1,1)
+write("Username: ")
+local usrname = read()
+write("Old password: ")
+local oldpass = read("*")
+write("New password: ")
+local newpass = read("*")
+
+if not fs.exists("users/"..usrname) then
+term.clear()
+term.setCursorPos(1,1)
+print("No such username!")
+sleep(1)
+term.clear()
+acc()
+elseif fs.exists("users/"..usrname) then
+local fileData = {}
+repeat
+local file = fs.open("users/"..usrName,"r")
+local line = file.readLine()
+while line do
+        table.insert(fileData, line)
+        line = file.readLine()
+end
+until line == nil -- readLine()
+file.close()
+local oldpassFromFile = fileData[1]
+if oldpass == oldpassFromFile then
+file = fs.open('users/'..usrName,'w') -- Changed from file.clear()
+file.writeLine(newpass)
+file.close()
+term.clear()
+term.setCursorPos(1,1)
+print("Changed!")
+sleep(1)
+term.clear()
+acc()
+else
+term.clear()
+term.setCursorPos(1,1)
+print("Failure!")
+sleep(1)
+term.clear()
+acc()
+
+end
+end
+end
+
+--[[
+Author: TheOriginalBIT
+Version: CUSTOM FOR HuskyOS
+Created: 13 Mar 2013
+ 
+License:
+ 
+COPYRIGHT NOTICE
+Copyright © 2013 Joshua Asbury a.k.a TheOriginalBIT [theoriginalbit@gmail.com]
+ 
+Permission is hereby granted only to Deadm_5 to distribute this software as a part of HuskyOS. If you wish to use this program please contact TheOriginalBIT on the ComputerCraft forums
+]]--
+ 
+function calendar(shorthand, ampm, refreshRate)
+  if not os.day then
+    print("Sorry but you don't seem to be running the version of ComputerCraft that this program requires (1.48+)")
+    return
+  end
+ 
+  local useShorthand = (shorthand == true) or false
+  local useAmPm = (ampm == true) or false
+  local refreshRate = (type(refreshRate) == "number") and refreshRate or 0.05
+ 
+  -- initialise variables
+  local currentYear = 1
+  local currentMonth = 1
+  local currentDay = 1
+  local isLeapYear = (currentYear % 4 == 0 and (currentYear % 100 > 0 or  currentYear % 400 == 0))
+  local yearPrefix = "AS (After Spawn)"
+ 
+  local monthsTable = {
+    {month="January", days=31, shorthand="JAN"},
+    {month="February", days=28, shorthand="FEB"},
+    {month="March", days=31, shorthand="MAR"},
+    {month="April", days=30, shorthand="APR"},
+    {month="May", days=31, shorthand="MAY"},
+    {month="June", days=30, shorthand="JUNE"},
+    {month="July", days=31, shorthand="JULY"},
+    {month="August", days=31, shorthand="AUG"},
+    {month="September", days=30, shorthand="SEPT"},
+    {month="October", days=31, shorthand="OCT"},
+    {month="November", days=30, shorthand="NOV"},
+    {month="December", days=31, shorthand="DEC"},
+  }
+ 
+  local daysTable = {
+    {day="Monday", shorthand="MON"},
+    {day="Tuesday", shorthand="TUE"},
+    {day="Wednesday", shorthand="WED"},
+    {day="Thursday", shorthand="THU"},
+    {day="Friday", shorthand="FRI"},
+    {day="Saturday", shorthand="SAT"},
+    {day="Sunday", shorthand="SUN"},
+  }
+ 
+  local function updateLeapYear(year)
+    isLeapYear = (currentYear % 4 == 0 and (currentYear % 100 > 0 or  currentYear % 400 == 0))
+  end
+ 
+  local function updateYear(days)
+    currentYear = math.floor(days/(isLeapYear and 366 or 365)+1)
+    updateLeapYear(year)
+  end
+ 
+  local function updateMonth(days)
+    local shiftedDays = days%366
+    local d = 0
+    for i = 1, #monthsTable do
+      local before = d
+      if i == 2 and isLeapYear then
+        d = d + 29
+      else
+        d = d + monthsTable[i].days
+      end
+      if shiftedDays >= before and shiftedDays <= d then
+        currentMonth = i
+        return
+      end
+    end
+  end
+
+  local function updateDay(days)
+    local shiftedDays = days%366
+    for i = 1, currentMonth - 1 do
+      shiftedDays = shiftedDays - monthsTable[i].days
+    end
+    currentDay = shiftedDays
+  end
+ 
+  local function hexToCol(hex)
+    local num = tonumber(hex, 16)
+    return num ~= nil and 2^num or nil
+  end
+ 
+  local function cwrite(msg, y, offset)
+    local sw,sh=term.getSize()
+    term.setCursorPos(sw/2-#msg/2+(#msg%2 and 0 or 1), (y or (sh/2)) + (offset or 0))
+    write(msg)
+  end
+ 
+  while true do
+    term.clear()
+    local dayCount = os.day()
+    updateYear(dayCount)
+    updateMonth(dayCount)
+    updateDay(dayCount)
+    cwrite("The time is: "..textutils.formatTime(os.time(), not useAmPm),nil,-2)
+    cwrite("The date is: "..currentDay.." "..(useShorthand and monthsTable[currentMonth].shorthand or monthsTable[currentMonth].month).." "..string.format("%.4d",currentYear),nil,2)
+	cwrite("You have to restart the Computer to exit!", nil, 9)
+	
+    os.startTimer(refreshRate)
+    os.pullEvent("timer")
+	os.pullEvent("key")
+	drawDesktop2()
+  end
+
+end
+
+function email()
+term.clear()
+write("Name: ")
+name = read()
+write("Message: ")
+msg = read()
+email = name.."\n"..msg
+
+http.post(
+ "http://mackos.netai.net/scripts/email.php?message="..textutils.urlEncode(tostring(email))
+ 
+)
+sleep(1)
+if http_success then
+term.clear()
+term.setCursorPos(1,1)
+print("Email sent!")
+sleep(1)
+term.clear()
+drawDesktop2()
+elseif http_failure then
+term.clear()
+term.setCursorPos(1,1)
+print("Failure!")
+sleep(1)
+term.clear()
+drawDesktop2()
+end
+end
+drawDesktop()
+
+function titleBar4()
+term.setCursorPos(1,1)
+  term.setBackgroundColor(tBarC)
+  term.setTextColor(tBartC)
+  term.clearLine()
+  term.setCursorPos(3,1)
+  print("[Trivias]")
+  term.setCursorPos(13,1)
+  print("Logged in as: "..usrName)
+end
+
+function update()
+shell.run("cd /")
+shell.run("/plugins/update")
+end
+
+function trivia()
+  term.setBackgroundColor(backColor)
+  term.clear()
+  term.setTextColor(32)
+  paintutils.drawImage(TriviaLogo,1,1)
+  titleBar4()
+end
+
+function drawMenu5()
+term.setTextColor(256)
+term.setBackgroundColor(128)
+term.setCursorPos(1,2)
+print("           ")
+term.setCursorPos(1,3)
+print("Minecraft  ")
+term.setCursorPos(1,4)
+print("Go Back    ")
+term.setCursorPos(1,5)
+print("           ")
+end
+
+while true do
+local event, button, X, Y = os.pullEvent("mouse_click")
+ if slc == 0 then
+  if event == "mouse_click" then
+   if X >= 2 and X <= 8 and Y == 1 and button == 1 then
+    drawMenu1()
+    slc = 1   
+   end
+  end
+ elseif slc == 1 then
+  if X >= 1 and X <= 11 and Y == 3 and button == 1 then slc = 0
+    login()
+   elseif X >= 1 and X <= 11 and Y == 4 and button == 1 then slc = 0
+   register()
+   elseif X >= 1 and X <= 11 and Y == 5 and button == 1 then slc = 0        
+   term.clear()
+   term.setCursorPos(9, 9)
+   print("Herunterfahren...")
+   sleep(0.4)
+   print("")
+   print("Schliesse Programme...")
+   sleep(1)
+   print("Stoppe Prozesse...")
+   sleep(2)
+   print("Sende POST Naachricht an Hardware...")
+   sleep(0.6)
+   print("Sende STOP an Mainboard...")
+   term.clear()
+   term.setCursorPos(9, 9)
+   print("Bye!")
+   sleep(2)
+   os.reboot()
+   elseif X >= 1 and X <= 11 and Y == 6 and button == 1 then slc = 0
+   term.clear()
+   term.setCursorPos(9, 9)
+   print("Herunterfahren...")
+   sleep(0.4)
+   print("")
+   print("Schliesse Programme...")
+   sleep(1)
+   print("Stoppe Prozesse...")
+   sleep(2)
+   print("Sende POST Naachricht an Hardware...")
+   sleep(0.6)
+   print("Sende STOP an Mainboard...")
+   term.clear()
+   term.setCursorPos(9, 9)
+   print("Bye!")
+   sleep(2)
+   os.shutdown()
+
+   
+   elseif X >= 1 and X <= 11 and Y == 7 and button == 1 then slc = 0
+   passgen()
+   elseif X >= 1 and X <= 11 and Y == 8 and button == 1 then slc = 0
+   credits()
+   else slc = 0
+   drawDesktop() 
+  end
+  
+	
+  elseif slc == 2 then
+   if X >= 1 and X <= 11  and Y == 1 and button == 1 then slc = 3
+  drawMenu2()
+  elseif X >= 2 and X <= 5 and Y >= 10 and Y <= 16 and button == 1 then
+     shell.run("explorer")
+  elseif X >= 10 and X <= 20 and Y == 1 and button == 1 then slc = 7
+   drawMenu3()
+  elseif X >= 20 and X <= 26 and Y == 1 and button == 1 then slc = 20
+   drawMenu20()
+   else slc = 2
+  drawDesktop2()
+  end
+  
+  elseif slc == 3 then
+  if X >= 1 and X <= 11 and Y == 3 and button == 1 then
+  term.clear()
+  slc = 1
+  drawDesktop()
+  elseif X >= 1 and X <= 11 and Y == 4 and button == 1 then
+  calc()
+  elseif X >= 1 and X <= 11 and Y == 5 and button == 1 then
+  acc()
+  elseif X >= 1 and X <= 11 and Y == 6 and button == 1 then
+   shell.run("explorer")
+  elseif X >= 1 and X <= 11 and Y == 7 and button == 1 then
+  calendar(true,false,0.05)
+  elseif X >= 1 and X <= 11 and Y == 8 and button == 1 then
+  email()
+  elseif X >= 1 and X <= 11 and Y == 9 and button == 1 then
+   term.clear()
+   term.setCursorPos(9, 15)
+   print("Herunterfahren...")
+   sleep(0.4)
+   print("")
+   print("")
+   print("Schliesse Programme...")
+   sleep(1)
+   print("Stoppe Prozesse...")
+   sleep(2)
+   print("Sende POST Nachricht an Hardware...")
+   sleep(0.6)
+   print("Sende STOP an Mainboard...")
+   term.clear()
+   term.setCursorPos(9, 15)
+   print("Bye!")
+   sleep(2)
+   os.shutdown()
+  elseif X >= 1 and X <= 11 and Y == 10 and button == 1 then
+   term.clear()
+   term.setCursorPos(9, 15)
+   print("Herunterfahren...")
+   sleep(0.4)
+   print("")
+   print("Schliesse Programme...")
+   sleep(1)
+   print("Stoppe Prozesse...")
+   sleep(2)
+   print("Sende POST Naachricht an Hardware...")
+   sleep(0.6)
+   print("Sende STOP an Mainboard...")
+   term.clear()
+   term.setCursorPos(9, 9)
+   print("Computer wird neu gestartet...")
+   sleep(2)
+   os.reboot()
+  else slc = 2
+  drawDesktop2()
+ end
+  
+  elseif slc == 20 then
+  if X >=20 and X <= 26 and Y == 2 and button == 1 then
+  term.clear()
+  elseif X >= 20 and X <= 26 and Y == 3 and button == 1 then
+  shell.run("settings")
+  elseif X >= 20 and X <= 26 and Y == 4 and button == 1 then
+  shell.run("system")
+  elseif X >= 20 and X <= 26 and Y == 5 and button == 1 then
+  shell.run("shell")
+  elseif X >= 20 and X <= 26 and Y == 6 and button == 1 then
+  update()
+elseif X >= 20 and X <= 26 and Y == 7 and button == 1 then
+  licence()
+  else slc = 2
+  drawDesktop2()
+ end
+ 
+  elseif slc == 4 then
+   if X >= 1 and X <= 11 and Y == 1 and button == 1 then slc = 5
+   drawMenu4()
+   else slc = 4
+   acc()
+   end
+   elseif slc == 5 then
+    if X >= 1 and X <= 11 and Y == 3 and button == 1 then
+	changepass()
+	elseif X >= 1 and X <= 11 and Y == 4 and button == 1 then
+	delacc()
+	elseif X >= 1 and X <= 11 and Y == 5 and button == 1 then slc = 2
+	drawDesktop2()
+	else slc = 4
+	acc()
+	end
+	
+	elseif slc == 6 then
+	if X >= 1 and X <= 3 and Y == 3 and button == 1 then
+	delacc2()
+	 elseif X >= 7 and X <= 9 and Y == 3 and button == 1 then slc = 4
+	 acc()
+ end
+    elseif slc == 7 then
+	 if X >= 12 and X <= 22 and Y == 3 and button == 1 then slc = 8
+	 trivia()
+	 else
+	 slc = 2
+	 drawDesktop2()
+ end
+    elseif slc == 8 then
+	 if X >= 1 and X <= 12 and Y == 1 and button == 1 then slc = 9
+	 drawMenu5()
+	 else
+	 slc = 7
+	 trivia()
+     end
+    elseif slc == 9 then
+	 if X >= 1 and X <= 12 and Y == 3 and button == 1 then
+	 term.clear()
+	 print("Minecraft Trivia - In Progress")
+	 sleep(5)
+	 term.clear()
+	 slc = 2
+	 drawDesktop2()
+	 elseif X >= 1 and X <= 12 and Y == 4 and button == 1 then slc = 2
+	 term.clear()
+	 drawDesktop2()
+	 else slc = 8
+	 trivia()
+	end
+end
+end
+end
+
+local ok, err2 = pcall(main)
+local err = err2 or ""
+local w,h = term.getSize()
+local Version = "1.1.2-BETA"
+if not ok then
+term.setBackgroundColor(colors.blue)
+term.clear()
+term.setTextColor(1)
+term.setCursorPos(math.floor(w-string.len("[Error]"))/2, 2)
+print("[Error]")
+term.setCursorPos(math.floor(w-string.len(err))/2, 4)
+print(err)
+term.setCursorPos(math.floor(w-string.len("Please report this to Deadm_5"))/2, 6)
+print("Please report this to Deadm_5")
+term.setCursorPos(math.floor(w-string.len("You will soon be returned to the start screen."))/2, 8)
+print("You will soon be returned to the start screen.")
+term.setCursorPos(math.floor(w-string.len("OS Version: "..Version))/1, 18)
+print("OS Version: "..Version)
+sleep(1)
+term.setCursorPos(math.floor(w-string.len("Dumping Memory... 10%"))/2, 12)
+print("Dumping Memory... 10%")
+sleep(2)
+term.setCursorPos(math.floor(w-string.len("Dumping Memory... 10%"))/2, 12)
+print("Dumping Memory... 40%")
+sleep(3)
+term.setCursorPos(math.floor(w-string.len("Dumping Memory... 80%"))/2, 12)
+print("Dumping Memory... 80%")
+sleep(1,50)
+term.setCursorPos(math.floor(w-string.len("Dumping Memory... 100%"))/2, 12)
+print("Dumping Memory... 100%")
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... |"))/2, 14)
+print("Rebooting, please wait... |")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... /"))/2, 14)
+print("Rebooting, please wait... /")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... -"))/2, 14)
+print("Rebooting, please wait... -")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... ."))/2, 14)
+print("Rebooting, please wait... .")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... |"))/2, 14)
+print("Rebooting, please wait... |")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... /"))/2, 14)
+print("Rebooting, please wait... /")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... -"))/2, 14)
+print("Rebooting, please wait... -")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... |"))/2, 14)
+print("Rebooting, please wait... |")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... /"))/2, 14)
+print("Rebooting, please wait... /")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... -"))/2, 14)
+print("Rebooting, please wait... -")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... ."))/2, 14)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... |"))/2, 14)
+print("Rebooting, please wait... |")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... /"))/2, 14)
+print("Rebooting, please wait... /")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... -"))/2, 14)
+print("Rebooting, please wait... -")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... ."))/2, 14)
+print("Rebooting, please wait... .")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... |"))/2, 14)
+print("Rebooting, please wait... |")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... /"))/2, 14)
+print("Rebooting, please wait... /")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... -"))/2, 14)
+print("Rebooting, please wait... -")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... |"))/2, 14)
+print("Rebooting, please wait... |")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... /"))/2, 14)
+print("Rebooting, please wait... /")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... -"))/2, 14)
+print("Rebooting, please wait... -")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... ."))/2, 14)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... |"))/2, 14)
+print("Rebooting, please wait... |")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... /"))/2, 14)
+print("Rebooting, please wait... /")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... -"))/2, 14)
+print("Rebooting, please wait... -")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... ."))/2, 14)
+print("Rebooting, please wait... .")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... |"))/2, 14)
+print("Rebooting, please wait... |")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... /"))/2, 14)
+print("Rebooting, please wait... /")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... -"))/2, 14)
+print("Rebooting, please wait... -")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... |"))/2, 14)
+print("Rebooting, please wait... |")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... /"))/2, 14)
+print("Rebooting, please wait... /")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... -"))/2, 14)
+print("Rebooting, please wait... -")
+sleep(0,40)
+term.setCursorPos(math.floor(w-string.len("Rebooting, please wait... ."))/2, 14)
+
+os.reboot()
+end
+main()

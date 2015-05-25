@@ -1,0 +1,86 @@
+Version = "0.1.3 - BETA"
+language = "Deutsch"
+term.clear()
+term.setBackgroundColor(colors.lightBlue)
+term.clear()
+1st()
+
+function 1st()
+term.setTextColor(1)
+term.setCursorPos(1,1)
+print("             -HuskyOS Deinstallation-             ")
+print("***************************************************")
+print("")
+print("Der Deinstallations-Assistent wird ihnen bei der Deinstallation von HuskyOS helfen.")
+print("")
+print("Vielen Dank, dass sie HuskyOS ausprobiert haben.")
+print("Falls Sie ein bestimmter Grund zu Deinstallation veranlasst, wuerden wir diesen gerne auf http://aubz.at erfahren.")
+print("")
+print("")
+print("Sind sie sich sicher, dass sie HuskyOS deinstallieren moechten?")
+print("")
+print("")
+print("Version des Deinstallers: "..Version) 
+
+paintutils.drawLine(1, 19, 51, 19, colours.blue)
+term.setCursorPos(38,19)
+write("[Fortsetzen]")
+term.setCursorPos(2,19)
+write("[Abbrechen]")
+term.setCursorPos(1,5)
+local event, button, X, Y = os.pullEvent("mouse_click")
+  if event == "mouse_click" then
+	if X >= 38 and X <= 49 and Y == 19 then
+		paintutils.drawLine(1, 1, 1, 1, colours.lightBlue)
+			term.setCursorPos(1,5)
+			if fs.exists("./disk/install_files") == true then
+				
+		shell.run("./disk/install_files/deinstallHuskyOS")
+		else
+		2nd()
+	elseif X >= 2 and X <= 12 and Y == 19 then
+		paintutils.drawLine(1, 1, 1, 1, colours.lightBlue)
+			term.setCursorPos(1,5)
+			shell.run("./disk/install_files/abbrechen")
+	
+	else
+	1st()
+	end
+end
+
+function 2nd()
+		term.clear()
+
+
+print("             -HuskyOS Deinstallation-             ")
+print("***************************************************")
+print("")
+print("                      [INFO]                      ")
+print("")
+print("Fuer die Deinstallation von HuskyOS wird das Installations-Medium benoetigt! Bitte legen sie die HuskyOS Disk in das Laufwerk und starten sie die Deinstallation erneut...")
+print("")
+print("Sie koennen aber den Deinstaller auch downloaden:")
+print("")
+print("")
+print("           [VON PASTEBIN HERUNTERLADEN]            ")
+print("")
+print("")
+print("Version des Deinstallers: "..Version) 
+print("")
+	paintutils.drawLine(1, 19, 51, 19, colours.blue)
+term.setCursorPos(1,19)
+write("HuskyOS Disk benoetigt...      [Erneut versuchen]")
+local event, button, X, Y = os.pullEvent("mouse_click")
+  if event == "mouse_click" then
+	if X >= 32 and X <= 49 and Y == 19 then
+		1st()
+	else
+		2nd()
+	end
+end
+
+end
+
+
+	end
+end
